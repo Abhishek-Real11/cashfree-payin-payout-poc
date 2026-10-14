@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cashfree Pay-in & Payout POC</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow">SANDBOX INTEGRATION DEMO</div>
+      <h1>Cashfree pay-in & payout</h1>
+      <p>Test hosted checkout plus bank-account and UPI-ID payouts from one small Node.js service.</p>
+      <div id="envBadge" class="badge">Checking environment…</div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-title"><span class="step">01</span><div><h2>Pay-in</h2><p>Collect a customer payment through Cashfree Checkout.</p></div></div>
+        <form id="payinForm">
+          <label>Amount (INR)<input name="amount" type="number" min="1" max="100000" step="0.01" value="10" required /></label>
+          <label>Customer phone<input name="phone" inputmode="numeric" pattern="[0-9]{10}" value="9999999999" required /></label>
+          <label>Customer email <span class="optional">optional</span><input name="email" type="email" placeholder="customer@example.com" /></label>
+          <button type="submit">Create order & checkout</button>
+        </form>
+        <div id="upiIntentReadiness" class="notice">Checking browser checkout mode…</div>
+        <div id="payinResult" class="result" aria-live="polite">Create a sandbox order to begin.</div>
+        <div id="verifyPayin" class="actions" hidden><button class="secondary" id="verifyPayinBtn">Check order status</button></div>
+        <form id="orderLookupForm" class="lookup-form">
+          <label>Check an existing order ID<input name="orderId" placeholder="poc_…" autocomplete="off" required /></label>
+          <button type="submit" class="secondary">Look up order</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span class="step">02</span><div><h2>Payout</h2><p>Send a sandbox transfer to a bank account or directly to a UPI ID.</p></div></div>
+        <div id="payoutLock" class="notice">Payout calls are disabled until you enable sandbox payouts in <code>.env</code>.</div>
+        <div class="payout-option">
+          <h3>Bank account payout</h3>
+          <p class="option-copy">Create a bank beneficiary, then transfer using its beneficiary ID.</p>
+        </div>
+        <form id="beneficiaryForm">
+          <label>Beneficiary name<input name="name" pattern="[A-Za-z ]{1,100}" value="Test Beneficiary" required /></label>
+          <div class="row"><label>Bank account number<input name="accountNumber" pattern="[A-Za-z0-9]{4,25}" value="00011020001772" autocomplete="off" required /></label><label>IFSC<input name="ifsc" pattern="[A-Za-z]{4}0[A-Za-z0-9]{6}" maxlength="11" value="HDFC0000001" required /></label></div>
+          <label>Beneficiary phone<input name="phone" inputmode="numeric" pattern="[0-9]{10}" value="9999999999" required /></label>
+          <button type="submit" class="payout-button">Create beneficiary</button>
+        </form>
+        <div id="beneficiaryResult" class="result" aria-live="polite">No beneficiary created yet.</div>
+        <form id="transferForm" class="transfer-form">
+          <label>Beneficiary ID<input id="beneficiaryId" name="beneficiaryId" placeholder="Create one above or paste an existing ID" autocomplete="off" required /></label>
+          <label>Transfer amount (INR)<input name="amount" type="number" min="1" max="10000" step="0.01" value="1" required /></label>
+          <button type="submit" class="payout-button">Initiate sandbox transfer</button>
+        </form>
+        <div class="payout-option upi-option">
+          <h3>UPI ID payout</h3>
+          <p class="option-copy">Transfer directly to a VPA without creating a bank beneficiary.</p>
+        </div>
+        <form id="upiTransferForm">
+          <label>Beneficiary name<input name="name" pattern="[A-Za-z ]{1,100}" value="Test Beneficiary" required /></label>
+          <label>UPI ID<input name="vpa" pattern="[A-Za-z0-9._\-]{2,256}@[A-Za-z0-9._]{2,64}" value="success@upi" inputmode="email" autocapitalize="none" spellcheck="false" autocomplete="off" required /></label>
+          <label>Beneficiary phone<input name="phone" inputmode="numeric" pattern="[0-9]{10}" value="9999999999" required /></label>
+          <label>Transfer amount (INR)<input name="amount" type="number" min="1" max="10000" step="0.01" value="1" required /></label>
+          <button type="submit" class="payout-button">Pay to UPI ID</button>
+        </form>
+        <div id="transferResult" class="result" aria-live="polite">Start a bank or UPI sandbox transfer.</div>
+        <div id="verifyTransfer" class="actions" hidden><button class="secondary" id="verifyTransferBtn">Check transfer status</button></div>
+        <form id="transferLookupForm" class="lookup-form">
+          <label>Check an existing transfer ID<input name="transferId" placeholder="poc_txn_… or poc_upi_…" autocomplete="off" required /></label>
+          <button type="submit" class="secondary payout-button">Look up transfer</button>
+        </form>
+      </section>
+    </div>
+    <footer>Demo only · Do not use for live money movement · Never trust a browser redirect as proof of payment.</footer>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
