@@ -2,6 +2,12 @@
 
 A small Node.js/Express sandbox demo. It includes Cashfree hosted checkout for pay-ins, server-side order verification, bank-beneficiary transfers, direct UPI-ID payouts, and transfer status lookup.
 
+## Mobile UPI Intent handoff
+
+- [Detailed Android and iOS handoff PDF](./output/pdf/RealFrnd_Cashfree_UPI_Intent_Mobile_Handoff.pdf)
+- [Quick mobile-team checklist](./MOBILE_UPI_HANDOFF.md)
+- [Official Cashfree UPI Intent JS SDK guide](https://www.cashfree.com/docs/payments/online/mobile/misc/upi_intent_support_js_sdk)
+
 ## Requirements
 
 - Node.js 20 or newer
